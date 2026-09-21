@@ -39,11 +39,11 @@ const BIOS_LINES = [
     "Mounting Egor_Nudes_Archive.rar... [ACCESS DENIED - FILES STOLEN]",
     "Bypassing Tolya's chloric floor defense protocol... [OK]",
     "Extracting Tundra_Sequel_Plans.exe... [PENDING]",
-    "Loading Omsk_Memories.sys... [OK]"
-	"The Tundra vodka was drunk... [DONE]"
-	"The bra is on. Vlad is pleased... [SUCCESS]"
-	"Listen to Egor's ramblings... [REDACTED]"
-	"Make the promised pancakes for Tolya. Pick up the wet dog food after two years... [OK]"
+    "Loading Omsk_Memories.sys... [OK]",
+	"The Tundra vodka was drunk... [DONE]",
+	"The bra is on. Vlad is pleased... [SUCCESS]",
+	"Listen to Egor's ramblings... [REDACTED]",
+	"Make the promised pancakes for Tolya. Pick up the wet dog food after two years... [OK]",
 	"Getting into a fight with Seryozha using chairs at Yegor's place... [OK]",
     "System booted successfully. Welcome, Alisa."
 ];
