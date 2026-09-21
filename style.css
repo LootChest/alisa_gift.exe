@@ -1,0 +1,136 @@
+body {
+  background-color: #008080; display: flex; justify-content: center; align-items: center;
+  height: 100vh; margin: 0; padding-bottom: 35px;
+  font-family: 'Pixelated MS Sans Serif', Arial; overflow: hidden; box-sizing: border-box;
+}
+
+#boot-screen-initial {
+  position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: black; display: flex; justify-content: center; align-items: center; z-index: 9000000;
+}
+.boot-btn {
+  font-size: 24px; padding: 20px 40px; font-weight: bold; cursor: pointer;
+  font-family: 'Pixelated MS Sans Serif', Arial;
+}
+#white-flash {
+  position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: white; z-index: 9000001; opacity: 1; transition: opacity 1.2s ease-out; pointer-events: none;
+}
+#bios-screen {
+  position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: #0000AA; color: #fff; font-family: 'Courier New', Courier, monospace;
+  padding: 20px; font-size: 16px; z-index: 8999999; box-sizing: border-box; overflow: hidden;
+}
+
+#desktop { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+.desktop-icon {
+  position: absolute; pointer-events: auto; display: flex; flex-direction: column; align-items: center; width: 90px;
+  text-align: center; color: white; cursor: pointer; text-shadow: 1px 1px 0 #000;
+}
+.desktop-icon .icon-img { font-size: 32px; margin-bottom: 5px; text-shadow: none; }
+.desktop-icon:active span { background-color: #000080; border: 1px dotted white; }
+
+#main-game-icon {
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 140px; z-index: 50;
+}
+#main-game-icon .icon-img { font-size: 64px; }
+#main-game-icon span { font-size: 16px; background: rgba(0,0,0,0.4); padding: 2px 5px; border-radius: 4px; }
+
+/* Окно мыслей Алисы */
+#alisa-dialogue-box {
+  position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+  width: 90%; max-width: 600px; min-height: 80px;
+  background: rgba(10, 10, 25, 0.9); border: 2px solid #ff1493; border-radius: 8px;
+  padding: 15px 20px; color: #fff; font-family: 'Pixelated MS Sans Serif', Arial; font-size: 15px; line-height: 1.5;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.4); z-index: 100000; transition: opacity 0.3s;
+  font-style: italic; /* Мысли курсивом */
+}
+.alisa-name-tag {
+  position: absolute; top: -15px; left: 15px; background: #ff1493; color: white;
+  padding: 2px 10px; font-weight: bold; border-radius: 4px; border: 2px solid #fff;
+  font-size: 14px; text-shadow: 1px 1px 0px #000; font-style: normal;
+}
+
+#event-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.75); z-index: 900000; display: flex; justify-content: center; align-items: center;
+}
+.virus-btn { position: absolute; font-weight: bold; color: red; transition: all 0.1s; z-index: 10; }
+.progress-bar-container { width: 100%; height: 25px; background: #fff; border: 2px solid #888; border-right-color: #fff; border-bottom-color: #fff; margin: 15px 0; position: relative; }
+.progress-fill { height: 100%; background: #000080; width: 0%; transition: width 0.1s; }
+
+.taskbar {
+  position: absolute; bottom: 0; left: 0; width: 100vw; height: 35px;
+  background-color: #c0c0c0; border-top: 2px solid #fff;
+  display: flex; align-items: center; padding: 0 5px;
+  z-index: 99999; pointer-events: auto; box-sizing: border-box; box-shadow: inset 0 1px #dfdfdf;
+}
+.start-btn {
+  font-weight: bold; padding: 2px 6px; display: flex; align-items: center; gap: 5px;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
+  background: #c0c0c0; border: none; cursor: pointer; font-size: 14px; font-family: 'Pixelated MS Sans Serif', Arial;
+}
+.start-btn:active { box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey; padding: 3px 5px 1px 7px; }
+.start-btn img { width: 16px; height: 16px; object-fit: contain; }
+.taskbar-item {
+  display: flex; align-items: center; gap: 5px; background: #e0e0e0;
+  box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey; 
+  padding: 4px 8px; margin-left: 10px; cursor: default; font-size: 12px; font-weight: bold;
+}
+.taskbar-item img { width: 16px; height: 16px; object-fit: contain; }
+.system-tray { margin-left: auto; box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey; padding: 4px 10px; display: flex; align-items: center; font-size: 12px; background: #c0c0c0; }
+
+#fisheye-overlay {
+  position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none; z-index: 9998;
+  background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.85) 110%);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+}
+.fisheye-active { display: block !important; animation: pulse-lens 4s infinite alternate ease-in-out; }
+@keyframes pulse-lens { 0% { transform: scale(1); backdrop-filter: blur(0px); } 100% { transform: scale(1.03); backdrop-filter: blur(2px) contrast(1.2); } }
+
+.crt-overlay { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%); background-size: 100% 4px; pointer-events: none; z-index: 9999; opacity: 0.3; }
+
+.window { width: 650px; max-width: 95%; z-index: 10; position: relative; }
+#game-container { min-height: 180px; margin-bottom: 20px; font-size: 15px; line-height: 1.6; }
+.stats-container { display: flex; justify-content: space-between; padding: 0 10px; }
+#choices { display: flex; flex-direction: column; gap: 10px; position: relative; min-height: 140px; }
+#choices button { text-align: left; padding: 8px 10px; cursor: pointer; font-size: 14px; transition: transform 0.1s; }
+.hidden { display: none !important; }
+
+.char-link { cursor: help; border-bottom: 1px dashed; font-weight: bold; }
+.char-vlad { color: #800080; }
+.char-tolya { color: #000080; }
+.char-egor { color: #008000; }
+.char-serega { color: #d2691e; }
+.char-alisa { color: #ff1493; }
+.system-text { color: #555; font-style: italic; }
+
+.drunk-1 { filter: blur(0.5px); }
+.drunk-2 { filter: blur(1px) contrast(1.2); animation: sway 4s infinite alternate ease-in-out; cursor: help !important; }
+.drunk-3 { filter: blur(2px) contrast(1.5) hue-rotate(15deg); animation: sway 2s infinite alternate ease-in-out; cursor: crosshair !important; }
+@keyframes sway { 0% { transform: rotate(-1deg) scale(1); } 100% { transform: rotate(1deg) scale(1.02); } }
+.mad-glitch { animation: rgbShift 0.3s infinite alternate; }
+@keyframes rgbShift { 0% { text-shadow: 2px 0 red, -2px 0 blue; } 100% { text-shadow: -2px 0 red, 2px 0 blue; } }
+
+.shake { display: inline-block; animation: shake 0.4s infinite; color: red; font-weight: bold; }
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  20% { transform: translate(-1px, -2px) rotate(-1deg); }
+  40% { transform: translate(-3px, 0px) rotate(1deg); }
+  60% { transform: translate(3px, 2px) rotate(0deg); }
+  80% { transform: translate(1px, -1px) rotate(1deg); }
+  100% { transform: translate(-1px, 2px) rotate(-1deg); }
+}
+.aggressive-shake { animation: shake 0.1s infinite !important; }
+
+#char-modal, #fake-popup, #txt-modal, #img-modal, #audio-modal { position: absolute; z-index: 1000; }
+#char-modal { width: 300px; }
+#char-img { width: 100%; border: 2px solid #888; border-right-color: #fff; border-bottom-color: #fff; }
+#fake-popup { width: 350px; }
+#meme-video { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: 10000; }
+
+.escaping-btn { position: absolute !important; z-index: 50; }
+
+#blood-canvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9000; cursor: crosshair; }

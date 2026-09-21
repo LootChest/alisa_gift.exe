@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>алиса_подарок.exe</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/98.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ЭКРАН ВКЛЮЧЕНИЯ ПК -->
+  <div id="boot-screen-initial">
+    <button class="boot-btn" onclick="startBootSequence()">ЗАПУСТИТЬ ПИСИ (PC)</button>
+  </div>
+  
+  <!-- БЕЛАЯ ВСПЫШКА -->
+  <div id="white-flash" class="hidden"></div>
+
+  <!-- ЭКРАН BIOS -->
+  <div id="bios-screen" class="hidden">
+    <div id="bios-text"></div>
+  </div>
+
+  <div class="crt-overlay"></div>
+  <div id="fisheye-overlay" class="hidden"></div>
+
+  <!-- ВИДЕО МЕМЛ -->
+  <video id="meme-video" class="hidden" src="meml.mp4" playsinline></video>
+
+  <!-- ИНТЕРАКТИВНЫЙ ХОЛСТ ДЛЯ КРОВИ -->
+  <canvas id="blood-canvas" class="hidden"></canvas>
+
+  <!-- СЛОЙ ДЛЯ СЛУЧАЙНЫХ ИВЕНТОВ -->
+  <div id="event-overlay" class="hidden">
+    <div class="window" id="event-window" style="width: 400px; position: relative;"></div>
+  </div>
+
+  <!-- РАБОЧИЙ СТОЛ (ИКОНКИ) -->
+  <div id="desktop" class="hidden">
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('trash')">
+      <div class="icon-img">🗑️</div><span>Корзина</span>
+    </div>
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('beats')">
+      <div class="icon-img">🎵</div><span>Секретные биты Серёги.mp3</span>
+    </div>
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('shark')">
+      <div class="icon-img">🦈</div><span>Акулы_исходник.psd</span>
+    </div>
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('audio')">
+      <div class="icon-img">🎶</div><span>алкошлюха.mp3</span>
+    </div>
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('nudes_rar')">
+      <div class="icon-img">🗜️</div><span>нюдсы_егора.rar</span>
+    </div>
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('txt')">
+      <div class="icon-img">📄</div><span>shiza_book_seleznev.txt</span>
+    </div>
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('img_zima')">
+      <div class="icon-img">🖼️</div><span>zima_2025.jpg</span>
+    </div>
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('img_1995')">
+      <div class="icon-img">🖼️</div><span>1995_gooddamn.jpg</span>
+    </div>
+    <div class="desktop-icon randomize-icon" onclick="triggerDesktopEvent('img_whore')">
+      <div class="icon-img">🖼️</div><span>whore_s.jpg</span>
+    </div>
+
+    <!-- ГЛАВНАЯ ИКОНКА ИГРЫ -->
+    <div class="desktop-icon" id="main-game-icon" onclick="launchGame()">
+      <div class="icon-img">🎀</div><span>алиса_подарок.exe</span>
+    </div>
+  </div>
+
+  <!-- ГЛАВНОЕ ОКНО ИГРЫ -->
+  <div class="window hidden" id="main-window" style="z-index: 100;">
+    <div class="title-bar">
+      <div class="title-bar-text" id="window-title">алиса_подарок.exe</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize" onclick="openFakePopup('Нельзя свернуть судьбу!')"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close" onclick="openFakePopup('Выход заблокирован Толей.')"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <fieldset>
+        <legend>База данных субъекта</legend>
+        <div class="stats-container">
+          <span>Опьянение: <strong id="stat-alko">0</strong></span>
+          <span>Безумие: <strong id="stat-mad">0</strong></span>
+          <span>Инвентарь: <strong id="stat-inv">Пусто</strong></span>
+        </div>
+      </fieldset>
+      <br>
+      <div id="game-container"></div>
+      <div id="choices" class="hidden"></div>
+    </div>
+  </div>
+
+  <!-- ДИАЛОГОВОЕ ОКНО АЛИСЫ (МЫСЛИ) -->
+  <div id="alisa-dialogue-box" class="hidden">
+    <div class="alisa-name-tag">Алиса (мысли)</div>
+    <div id="alisa-text-container"></div>
+  </div>
+
+  <!-- ОКНО ПЕРСОНАЖА -->
+  <div class="window hidden" id="char-modal" style="z-index: 1001;">
+    <div class="title-bar">
+      <div class="title-bar-text" id="char-title">Досье</div>
+      <div class="title-bar-controls"><button aria-label="Close" onclick="closeCharModal()"></button></div>
+    </div>
+    <div class="window-body" style="text-align: center;">
+      <img id="char-img" src="" alt="Фото">
+      <p id="char-desc" style="margin-top: 10px; font-weight: bold;"></p>
+      <button onclick="closeCharModal()">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- БЛОКНОТ -->
+  <div class="window hidden" id="txt-modal" style="width: 400px; z-index: 1001;">
+    <div class="title-bar">
+      <div class="title-bar-text" id="txt-title">Блокнот</div>
+      <div class="title-bar-controls"><button aria-label="Close" onclick="document.getElementById('txt-modal').classList.add('hidden')"></button></div>
+    </div>
+    <div class="window-body">
+      <textarea id="txt-content" readonly style="width: 100%; height: 120px; resize: none; font-family: 'Pixelated MS Sans Serif', Arial;"></textarea>
+    </div>
+  </div>
+
+  <!-- ОКНО КАРТИНОК -->
+  <div class="window hidden" id="img-modal" style="width: auto; max-width: 80vw; z-index: 1001;">
+    <div class="title-bar">
+      <div class="title-bar-text" id="img-title">Просмотр изображений</div>
+      <div class="title-bar-controls"><button aria-label="Close" onclick="document.getElementById('img-modal').classList.add('hidden')"></button></div>
+    </div>
+    <div class="window-body" style="text-align: center;">
+      <img id="img-content" src="" alt="image" style="max-width: 100%; max-height: 60vh; border: 2px solid #888; border-right-color: #fff; border-bottom-color: #fff;">
+    </div>
+  </div>
+
+  <!-- МЕДИАПЛЕЕР -->
+  <div class="window hidden" id="audio-modal" style="width: 400px; z-index: 1002;">
+    <div class="title-bar">
+      <div class="title-bar-text">Медиаплеер Windows</div>
+      <div class="title-bar-controls"><button aria-label="Close" onclick="closeAudioModal()"></button></div>
+    </div>
+    <div class="window-body">
+      <div style="display: flex; gap: 15px; align-items: center;">
+        <img src="album.jpg" alt="Cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwODA4MCIvPjwvc3ZnPg=='" style="width: 80px; height: 80px; border: 2px solid #888; object-fit: cover;">
+        <div style="flex-grow: 1;">
+          <p style="margin: 0 0 10px 0; font-weight: bold; font-size: 14px;" class="shake">алкошлюха.mp3</p>
+          <div style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
+            <span id="audio-current-time">0:00</span>
+            <input type="range" id="audio-progress" min="0" max="100" value="0" style="flex-grow: 1; cursor: pointer;">
+            <span id="audio-duration">0:00</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 5px; font-size: 11px; margin-top: 10px;">
+            <span>🔈</span>
+            <input type="range" id="audio-volume" min="0" max="1" step="0.01" value="1" style="width: 100px; cursor: pointer;">
+            <span>🔊</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 15px; display: flex; justify-content: center; gap: 5px;">
+         <button onclick="playAlcoWhore()">▶ Воспр.</button>
+         <button onclick="pauseAlcoWhore()">⏸ Пауза</button>
+         <button onclick="closeAudioModal()">Остановить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ФЕЙКОВОЕ ОКНО -->
+  <div class="window hidden" id="fake-popup" style="z-index: 9999999;">
+    <div class="title-bar">
+      <div class="title-bar-text">ВНИМАНИЕ СИСТЕМЫ</div>
+    </div>
+    <div class="window-body">
+      <p id="fake-popup-msg" style="font-weight: bold;"></p>
+      <div id="fake-popup-link-container" class="hidden" style="margin-top: 10px;">
+         <a id="fake-popup-link" href="#" target="_blank" style="color: blue; text-decoration: underline;">> украденные_нюдсы.zip <</a>
+      </div>
+      <div style="text-align: center; margin-top: 15px;">
+        <button id="fake-popup-ok-btn" onclick="closeFakePopup()">ОК</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ПАНЕЛЬ ЗАДАЧ -->
+  <div class="taskbar hidden" id="taskbar-container">
+    <button class="start-btn" onclick="triggerDesktopEvent('start')">
+      <img src="win.png" onerror="this.style.display='none'"> Пуск
+    </button>
+    <div class="taskbar-item">
+      <img src="icon.png" onerror="this.style.display='none'"> подарок_алиса.exe
+    </div>
+    <div class="system-tray">
+      <span id="taskbar-time">12:00</span>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
